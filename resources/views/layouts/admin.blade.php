@@ -34,13 +34,13 @@
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Unggah Surat Pengantar">
-          <a class="nav-link" href="{{route('admin.create')}}">
+          <a class="nav-link" href="{{route('pengantarkota.create')}}">
             <i class="fa fa-fw fa-file"></i>
             <span class="nav-link-text">Unggah Surat Pengantar</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Data Invetor">
-          <a class="nav-link" href="datainventor.html">
+          <a class="nav-link" href="{{url('admin/datainventor')}}">
             <i class="fa fa-fw fa-file"></i>
             <span class="nav-link-text">Data Inventor</span>
           </a>

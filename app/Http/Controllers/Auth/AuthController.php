@@ -30,7 +30,7 @@ class AuthController extends Controller
      */
     protected function authenticated($request, $user)
     {
-        if($user->role=="super"){
+        if($user->role=="superadmin"){
             return redirect('superadmin');
         }elseif ($user->role=="inventor") {
             return redirect('inventor');

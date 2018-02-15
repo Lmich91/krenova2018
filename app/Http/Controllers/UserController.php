@@ -50,7 +50,11 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         
-        $user = User::create($request->all());
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request->input('password'));
+        $user->role = $request->input('role');
         $user->save();
         
         $admin = new Admin();

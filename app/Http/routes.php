@@ -15,7 +15,18 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::resources([
+Route::get('/admin/editprofil/{id}', 'AdminController@editinventor');
+Route::patch('/admin/updateprofil/{id}', 'AdminController@updateprofil');
+Route::post('/admin/deletesprofil/{id}', 'AdminController@deletesprofil');
+Route::get('/admin/datainventor', 'AdminController@datainventor');
+
+
+  
+Route::group([
+  'middleware'=>['auth']] ,function(){
+
+Route::get('/home', 'HomeController@index');
+  Route::resources([
     'superadmin' => 'SuperAdminController',
     'inventor' => 'InventorController',
     'admin' => 'AdminController',
@@ -24,13 +35,9 @@ Route::resources([
     'role' => 'RoleController',
     'proposal' => 'ProposalController',
     'user' => 'UserController',
-    'adminkuesioner' => 'AdminkuesionerController'
+    'adminkuesioner' => 'AdminkuesionerController',
+    'pengantarkota' => 'PengantarkotaController'
   ]);
-  
-Route::group([
-  'middleware'=>['auth']] ,function(){
-
-  Route::get('/home', 'HomeController@index');
 
 });
 

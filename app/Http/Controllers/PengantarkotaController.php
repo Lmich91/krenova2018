@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use Auth;
-use App\Inventor;
-use App\Profil;
-use App\User;
+use App\Admin;
 
-class AdminController extends Controller
+use App\Pengantarkota;
+
+use Auth;
+
+class PengantarkotaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,46 +21,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view ('admin.index');
-    }
-
-    public function datainventor()
-    {
-        $inventor=Auth::user()->admin->profil;
-        // return ([$inventor]);
-        return view('admin.datainventor')->with(['inventors'=>$inventor]);
-    }
-
-    public function editinventor($id){
-        $profil=Profil::find($id);
-        return view('admin.editprofil')->with(['profil'=>$profil]);
-    }
-
-    public function updateprofil(Request $request, $id){
-        $profil=Profil::find($id);
-        $user=User::find($profil->user_id);
-        $profil->nama=$request->input('nama');
-        $profil->alamat=$request->input('alamat');
-        $profil->email=$request->input('email');
-        $profil->no_telp=$request->input('no_telp');
-        $profil->judul=$request->input('inovasi');
-        $user->email=$request->input('email');
-        $profil->save();
-        $user->save();
-        return redirect('admin');
-    }
-
-    public function deletesprofil($id){
-        $profil=Profil::find($id);
-        $user=User::find($profil->user_id);
-        $profil->delete();
-        $user->delete();
-        return redirect('admin/datainventor');
-    }
-
-    public function cekproposal()
-    {
-        return view('admin.cekproposal');
+        //
     }
 
     /**
@@ -69,8 +31,10 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admin.create');
+        $admin=Auth::user()->admins;
+        return view('admin.suratpengantar.create', compact ('admin'));
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -79,8 +43,25 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $admin=Auth::user()->admin;
+
+        $pengantarkota = new Pengantarkota();
+
+        $pengantarkota->admin_id = $admin->id;
+        // $pengantarkota->jabatan = $request->input ('nama_surat');
+        // $pengantarkota->nama = $request->input ('nama_surat');
+
+        $file       = $request->file('nama_surat');
+        $fileName   = $file->getClientOriginalName();
+        $request->file('nama_surat')->move("suratpengantarkota/", $fileName);
+
+        $pengantarkota->nama_surat = $fileName;
+
+        $pengantarkota->save();
+
+        return redirect('/admin')->with('success', 'Saved');
     }
+
     /**
      * Display the specified resource.
      *
@@ -91,6 +72,7 @@ class AdminController extends Controller
     {
         //
     }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -101,6 +83,7 @@ class AdminController extends Controller
     {
         //
     }
+
     /**
      * Update the specified resource in storage.
      *
@@ -112,6 +95,7 @@ class AdminController extends Controller
     {
         //
     }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-
+use Auth;
+use App\Profil;
+use App\User;
 class InventorController extends Controller
 {
        /**
@@ -16,7 +18,8 @@ class InventorController extends Controller
     public function index()
     {
         //
-        return view('inventor.profil.index');
+        $profil=Auth::user()->id;
+        return view('inventor.profil.index')->with(['profil'=>$profil]);
     }
     /**
      * Show the form for creating a new resource.
@@ -25,9 +28,8 @@ class InventorController extends Controller
      */
     public function create()
     {
-        $profil=Auth::user()->profils;
-        return view('inventor.profil.edit')->with(['profil'=>$profil]);
-        
+        $inventor=Auth::user()->profil;
+        return view('admin.createinventor')->with(['profil'=>$inventor]);
     }
     /**
      * Store a newly created resource in storage.
@@ -37,8 +39,22 @@ class InventorController extends Controller
      */
     public function store(Request $request)
     {
-        Pengusul::create($request->all());
-        Profil::create($request->all());
+        $user = new User();
+        $profil = new Profil();
+        $profil->nama=$request->input('nama');
+        $profil->alamat=$request->input('alamat');
+        $profil->email=$request->input('email');
+        $profil->no_telp=$request->input('no_telp');
+        $profil->judul=$request->input('inovasi');
+        $profil->admin_id=Auth::user()->admin->id;
+        $user->name=$request->input('username');
+        $user->password=bcrypt($request->input('password'));
+        $user->email=$request->input('email');
+        $user->role="inventor";
+        $user->save();
+        $profil->user_id=$user->id;
+        $profil->save();
+        return redirect('admin');
     }
     /**
      * Display the specified resource.
@@ -59,6 +75,8 @@ class InventorController extends Controller
     public function edit($id)
     {
         //
+        $profil=Auth::user()->profil;
+        return view('inventor.profil.edit')->with(['profil'=>$profil]);
     }
     /**
      * Update the specified resource in storage.
@@ -84,9 +102,9 @@ class InventorController extends Controller
         $profil->no_telp=$request->input('no_telp');
         $profil->kabupaten=$request->input('kabupaten');
         $profil->email=$request->input('email');
-        $profil->temuan=$request->input('inovasi');
+        $profil->judul=$request->input('inovasi');
         $profil->save();
-        return redirect('profil/create')->with('success','Data Telah Diubah');
+        return redirect('inventor')->with('success','Data Telah Diubah');
     }
     /**
      * Remove the specified resource from storage.

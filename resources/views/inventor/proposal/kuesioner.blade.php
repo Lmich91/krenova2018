@@ -1,5 +1,3 @@
-@extends ('layouts.inventor')
-@section ('content')
 <div class="tab-pane fade" id="kuesioner" role="tabpanel" aria-labelledby="kuesioner-tab">
         {{--  <form>  --}}
             <br>
@@ -33,7 +31,7 @@
                 <label for="implementasi_asal_usul">- Fasilitas dan Lomba apa saja yang pernah diterima/diikuti? Jelaskan </label>
                 <input type="text" class="form-control" id="implementasi_asal_usul" name="implementasi_asal_usul">
             </div>
-            <p>b. Penerapan</p>	
+            <p>b. Penerapan</p> 
             <div class="form-group">
                 <label for="penerapan_temuan"> -  Apakah temuan saudara sudah diterapkan?</label>
                 <input type="text" class="form-control" id="penerapan_temuan" name="penerapan_temuan">
@@ -97,4 +95,3 @@
             <button type="submit" value="draft-kuesioner" name="submit" class="btn btn-primary">Simpan Daft</button> <a href="#" id="lanjutkan_kuesioner" class="btn btn-secondary">Lanjutkan</a> 
         {{--  </form>  --}}
     </div>
-@endsection
